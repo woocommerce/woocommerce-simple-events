@@ -1,0 +1,9 @@
+{
+    "name": "woocommerce-simple-events",
+    "private": true,
+    "version": "0.1.0",
+    "description": "Test plugin exercising the WooCommerce dual-code GraphQL infrastructure's granular (field-level) authorization.",
+    "scripts": {
+        "build:api": "php bin/build-api.php"
+    }
+}

@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: WooCommerce Simple Events
- * Description: Test plugin exercising the WooCommerce dual-code GraphQL infrastructure's granular (field-level) authorization. Exposes a tiny event-registration API at /wp-json/wc/graphql/simple-events.
+ * Description: Test plugin exercising the WooCommerce dual-code GraphQL infrastructure end to end from outside core. Exposes a small event-registration API at /wp-json/wc/graphql/simple-events.
  * Version: 0.1.0
  * Requires PHP: 8.1
  * Requires Plugins: woocommerce

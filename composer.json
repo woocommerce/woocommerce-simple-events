@@ -1,6 +1,6 @@
 {
     "name": "automattic/woocommerce-simple-events",
-    "description": "Test plugin exercising the WooCommerce dual-code GraphQL infrastructure's granular (field-level) authorization.",
+    "description": "Test plugin exercising the WooCommerce dual-code GraphQL infrastructure end to end from outside core.",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",
     "require": {

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Automattic\WooCommerceSimpleEvents\Api;
 
+use Automattic\WooCommerceSimpleEvents\Api\Enums\EventStatus;
 use Automattic\WooCommerceSimpleEvents\Api\Types\Attendee;
 use Automattic\WooCommerceSimpleEvents\Api\Types\Event;
+use Automattic\WooCommerceSimpleEvents\Api\Types\Session;
 
 /**
  * Object-cache-backed store for the simple-events plugin.
@@ -64,9 +66,19 @@ final class Store {
 		$e1->name            = 'PHP Conference';
 		$e1->description     = 'Annual gathering for PHP developers.';
 		$e1->date            = '2026-09-15T09:00:00+00:00';
+		$e1->status          = EventStatus::Published;
+		$e1->raw_status      = 'published';
 		$e1->venue           = 'Madrid, Spain';
+		$e1->location        = 'Madrid, Spain';
 		$e1->capacity        = 200;
+		$e1->sessions        = self::make_sessions(
+			array(
+				array( 101, '2026-09-15T10:00:00+00:00', 'Keynote: the state of PHP', 'Ada Lovelace' ),
+				array( 102, '2026-09-15T11:30:00+00:00', 'Async PHP in production', null ),
+			)
+		);
 		$e1->organizer_login = 'organizer';
+		$e1->sequence        = 1;
 		$e1->waitlist_size   = 12;
 		$e1->revenue         = 4980.0;
 		$e1->internal_notes  = 'Renegotiate catering before invoicing.';
@@ -76,9 +88,18 @@ final class Store {
 		$e2->name            = 'WordCamp Madrid';
 		$e2->description     = 'Community meet-up for WordPress contributors.';
 		$e2->date            = '2026-11-04T10:00:00+00:00';
+		$e2->status          = EventStatus::Published;
+		$e2->raw_status      = 'published';
 		$e2->venue           = 'Madrid, Spain';
+		$e2->location        = 'Madrid, Spain';
 		$e2->capacity        = 350;
+		$e2->sessions        = self::make_sessions(
+			array(
+				array( 201, '2026-11-04T11:00:00+00:00', 'Block themes deep dive', 'Grace Hopper' ),
+			)
+		);
 		$e2->organizer_login = 'manager';
+		$e2->sequence        = 2;
 		$e2->waitlist_size   = 0;
 		$e2->revenue         = 12250.5;
 		$e2->internal_notes  = 'Confirm sponsor logos one week out.';
@@ -112,6 +133,26 @@ final class Store {
 		);
 		self::persist( $state );
 		return $state;
+	}
+
+	/**
+	 * Build a list of {@see Session} objects from compact tuples.
+	 *
+	 * @param list<array{0:int,1:string,2:string,3:?string}> $rows Tuples of (id, ISO date, title, speaker).
+	 * @return list<Session>
+	 */
+	private static function make_sessions( array $rows ): array {
+		return array_map(
+			static function ( array $row ): Session {
+				$session          = new Session();
+				$session->id      = $row[0];
+				$session->date    = $row[1];
+				$session->title   = $row[2];
+				$session->speaker = $row[3];
+				return $session;
+			},
+			$rows
+		);
 	}
 
 	/**
@@ -164,19 +205,47 @@ final class Store {
 		return $attendee;
 	}
 
-	public static function statistics_for_event( int $event_id ): ?Types\EventStats {
+	/**
+	 * Build the statistics for an event.
+	 *
+	 * The `$include_money` flag lets the caller skip the revenue-related
+	 * aggregates when the query didn't select them — see how
+	 * {@see \Automattic\WooCommerceSimpleEvents\Api\Queries\GetStatistics}
+	 * derives it from the `$_query_info` selection tree. The skipped fields
+	 * stay null; they are scope-gated anyway, so most callers never see them.
+	 */
+	public static function statistics_for_event( int $event_id, bool $include_money = true ): ?Types\EventStats {
 		if ( null === self::get_event( $event_id ) ) {
 			return null;
 		}
-		$attendees    = self::attendees_for_event( $event_id );
-		$stats        = new Types\EventStats();
+		$attendees                   = self::attendees_for_event( $event_id );
+		$stats                       = new Types\EventStats();
 		$stats->event_id             = $event_id;
 		$stats->attendees_total      = count( $attendees );
-		$stats->revenue_total        = array_sum( array_map( static fn( $a ) => $a->paid_amount, $attendees ) );
-		$stats->paid_attendees_count = count(
-			array_filter( $attendees, static fn( $a ) => $a->paid_amount > 0.0 )
-		);
+		$stats->revenue_total        = $include_money
+			? array_sum( array_map( static fn( $a ) => $a->paid_amount, $attendees ) )
+			: null;
+		$stats->paid_attendees_count = $include_money
+			? count( array_filter( $attendees, static fn( $a ) => $a->paid_amount > 0.0 ) )
+			: null;
 		return $stats;
+	}
+
+	/**
+	 * Mark an event cancelled. Returns the updated event, or null when no
+	 * event had that id.
+	 */
+	public static function cancel_event( int $id ): ?Event {
+		$state = self::load();
+		$event = $state['events'][ $id ] ?? null;
+		if ( null === $event ) {
+			return null;
+		}
+		$event->status     = EventStatus::Cancelled;
+		$event->raw_status = 'cancelled';
+		$state['events'][ $id ] = $event;
+		self::persist( $state );
+		return $event;
 	}
 
 	public static function update_event(

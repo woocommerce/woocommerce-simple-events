@@ -4,21 +4,34 @@ declare(strict_types=1);
 
 namespace Automattic\WooCommerceSimpleEvents\Api\Types;
 
+use Automattic\WooCommerce\Api\Attributes\ArrayOf;
+use Automattic\WooCommerce\Api\Attributes\Deprecated;
 use Automattic\WooCommerce\Api\Attributes\Description;
 use Automattic\WooCommerce\Api\Attributes\HiddenFromMetadataQuery;
+use Automattic\WooCommerce\Api\Attributes\Ignore;
+use Automattic\WooCommerce\Api\Attributes\Internal;
+use Automattic\WooCommerceSimpleEvents\Api\Enums\EventStatus;
+use Automattic\WooCommerceSimpleEvents\Api\Interfaces\ScheduledItem;
 use Automattic\WooCommerceSimpleEvents\Api\Attributes\OwnerOrScope;
 use Automattic\WooCommerceSimpleEvents\Api\Attributes\RequiresScope;
 
 /**
- * An event in the simple-events demo. Output-type fields exercise the
- * field-level authorization surface: most fields are public, but a few
- * sensitive ones are gated to specific scopes or to the event's
- * organizer.
+ * An event open for registration. Exercises a broad slice of the
+ * infrastructure:
+ *
+ *  - Implements the {@see ScheduledItem} interface (via the trait), which
+ *    contributes the `id` and (custom-scalar) `date` fields.
+ *  - Carries an `EventStatus` enum field plus a `raw_status` escape hatch.
+ *  - Holds a list of nested {@see Session} objects (`#[ArrayOf]` with a
+ *    class element type).
+ *  - Demonstrates `#[Deprecated]`, `#[Ignore]`, and the `#[Internal]`
+ *    metadata marker.
+ *  - Keeps the field-level authorization gates (`waitlist_size`,
+ *    `revenue`, `internal_notes`) that the granular-auth work introduced.
  */
 #[Description( 'An event open for registration.' )]
 class Event {
-	#[Description( 'Numeric identifier.' )]
-	public int $id;
+	use ScheduledItem;
 
 	#[Description( 'Human-readable name.' )]
 	public string $name;
@@ -26,58 +39,81 @@ class Event {
 	#[Description( 'Detailed description shown on the public event page.' )]
 	public string $description;
 
-	#[Description( 'Start date / time as an ISO 8601 string.' )]
-	public string $date;
+	#[Description( 'Current lifecycle status.' )]
+	public EventStatus $status;
+
+	#[Description( 'Raw status string as stored. Useful when status is OTHER.' )]
+	public string $raw_status;
 
 	#[Description( 'Venue (free-form text).' )]
 	public string $venue;
 
+	/**
+	 * Deprecated alias of {@see self::$venue}. Demonstrates `#[Deprecated]`:
+	 * the field stays in the schema but is flagged with a reason in
+	 * introspection so clients migrate off it.
+	 */
+	#[Description( 'Where the event takes place.' )]
+	#[Deprecated( 'Use venue instead.' )]
+	public string $location;
+
 	#[Description( 'Maximum number of attendees the venue can accept.' )]
 	public int $capacity;
+
+	#[Description( 'Talks scheduled for this event.' )]
+	#[ArrayOf( Session::class )]
+	public array $sessions;
 
 	#[Description( 'Login of the user who created the event.' )]
 	public string $organizer_login;
 
 	/**
-	 * Demonstrates the `$_parent` opt-in slot via {@see OwnerOrScope}:
-	 * the event's own organizer can always read this; otherwise the
-	 * caller needs the `events:waitlist` scope (held by `manager`).
+	 * Internal ordering hint. Demonstrates the `#[Internal]` metadata
+	 * marker: the field is still queryable, but is tagged `internal` in
+	 * `_apiMetadata` and its description is prefixed with `[Internal] `.
+	 */
+	#[Description( 'Internal sort order.' )]
+	#[Internal]
+	public int $sequence;
+
+	/**
+	 * Demonstrates the `$_parent` opt-in slot via {@see OwnerOrScope}: the
+	 * event's own organizer can always read this; otherwise the caller
+	 * needs the `events:waitlist` scope (held by `manager`).
 	 *
-	 * Declared **non-null** (`int`) on purpose: when the gate denies, the
-	 * field's null has nowhere to land, so per the GraphQL spec it
+	 * Declared non-null on purpose: when the gate denies, the null
 	 * propagates up to the nearest nullable parent — the whole `event`
-	 * object becomes null. Contrast with `revenue` below, which is
-	 * nullable and degrades to a single null field instead.
+	 * object becomes null. Contrast with `revenue` below.
 	 */
 	#[Description( 'Number of people on the waitlist for this event.' )]
 	#[OwnerOrScope( 'events:waitlist' )]
 	public int $waitlist_size;
 
 	/**
-	 * Demonstrates a straightforward scope-equality field gate. Only
-	 * principals holding `events:revenue` (i.e. `finance`) can read it.
-	 *
-	 * Declared **nullable** (`?float`): when the gate denies, the field
-	 * resolves to null while its siblings still resolve and the enclosing
-	 * `event` object survives — the graceful-degradation pattern, and the
-	 * recommended default for gated fields.
+	 * Straightforward scope-equality field gate; only principals holding
+	 * `events:revenue` (finance) can read it. Nullable, so a deny degrades
+	 * to a single null field rather than nulling the whole object.
 	 */
 	#[Description( 'Total revenue collected from registrations for this event.' )]
 	#[RequiresScope( 'events:revenue' )]
 	public ?float $revenue;
 
 	/**
-	 * Demonstrates the per-target `_apiMetadata` opt-out via the stock
-	 * `#[HiddenFromMetadataQuery]` marker. The runtime gate is supplied
-	 * by `#[RequiresScope('events:internal_notes')]` and still fires
-	 * (only `manager` can read); the marker independently keeps the
-	 * field out of the discovery endpoint.
-	 *
-	 * Like `waitlist_size`, declared **non-null** (`string`), so a deny
-	 * propagates the null up to the enclosing `event` object.
+	 * Gated at runtime by `#[RequiresScope('events:internal_notes')]` and
+	 * independently hidden from the `_apiMetadata` discovery channel by
+	 * `#[HiddenFromMetadataQuery]`.
 	 */
 	#[Description( 'Free-form notes used internally by event managers.' )]
 	#[RequiresScope( 'events:internal_notes' )]
 	#[HiddenFromMetadataQuery]
 	public string $internal_notes;
+
+	/**
+	 * Server-only bookkeeping never exposed in the schema. Demonstrates
+	 * `#[Ignore]`: the property exists on the PHP object but the builder
+	 * skips it entirely, so it appears in neither the schema nor
+	 * introspection.
+	 */
+	#[Ignore]
+	public ?string $audit_token = null;
 }

@@ -15,15 +15,25 @@ use Automattic\WooCommerceSimpleEvents\Api\Types\EventStats;
  * query itself is `#[PublicAccess]` so the type-level (trait-supplied)
  * gate on `EventStats` is exercised independently of any class-level
  * gate on the query.
+ *
+ * Demonstrates the `$_query_info` infrastructure parameter: the resolver
+ * passes the current selection tree, and the query skips the (notionally
+ * expensive) revenue aggregates when the client didn't select them. The
+ * tree's top-level keys are the selected field names of the result.
  */
 #[Name( 'statistics' )]
-#[Description( 'Aggregate statistics for an event. Every field is manager-only via a trait-level gate.' )]
+#[Description( 'Aggregate statistics for an event. Sensitive fields are gated to finance.' )]
 #[PublicAccess]
 class GetStatistics {
 	public function execute(
 		#[Description( 'Identifier of the event to summarise.' )]
 		int $event_id,
+		?array $_query_info = null,
 	): ?EventStats {
-		return Store::statistics_for_event( $event_id );
+		$include_money = ! is_array( $_query_info )
+			|| isset( $_query_info['revenue_total'] )
+			|| isset( $_query_info['paid_attendees_count'] );
+
+		return Store::statistics_for_event( $event_id, $include_money );
 	}
 }

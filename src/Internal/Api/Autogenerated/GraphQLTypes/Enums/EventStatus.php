@@ -16,27 +16,27 @@ class EventStatus {
 			self::$instance = new EnumType(
 				array(
 					'name'        => 'EventStatus',
-					'description' => __( 'The lifecycle status of an event.', 'woocommerce' ),
+					'description' => __( 'The lifecycle status of an event.', 'woocommerce-simple-events' ),
 					'values'      => array(
 						'DRAFT'     => array(
 							'value'       => EventStatusEnum::Draft,
-							'description' => __( 'Created but not yet open for registration.', 'woocommerce' ),
+							'description' => __( 'Created but not yet open for registration.', 'woocommerce-simple-events' ),
 						),
 						'PUBLISHED' => array(
 							'value'       => EventStatusEnum::Published,
-							'description' => __( 'Open for registration.', 'woocommerce' ),
+							'description' => __( 'Open for registration.', 'woocommerce-simple-events' ),
 						),
 						'CANCELLED' => array(
 							'value'       => EventStatusEnum::Cancelled,
-							'description' => __( 'Called off; no further registrations are accepted.', 'woocommerce' ),
+							'description' => __( 'Called off; no further registrations are accepted.', 'woocommerce-simple-events' ),
 						),
 						'COMPLETED' => array(
 							'value'       => EventStatusEnum::Completed,
-							'description' => __( 'Already took place.', 'woocommerce' ),
+							'description' => __( 'Already took place.', 'woocommerce-simple-events' ),
 						),
 						'OTHER'     => array(
 							'value'       => EventStatusEnum::Other,
-							'description' => __( 'A status not covered by the standard values. Inspect raw_status for the underlying value.', 'woocommerce' ),
+							'description' => __( 'A status not covered by the standard values. Inspect raw_status for the underlying value.', 'woocommerce-simple-events' ),
 						),
 					),
 				)

@@ -21,58 +21,58 @@ class Event {
 			self::$instance = new ObjectType(
 				array(
 					'name'        => 'Event',
-					'description' => __( 'An event open for registration.', 'woocommerce' ),
+					'description' => __( 'An event open for registration.', 'woocommerce-simple-events' ),
 					'interfaces'  => fn() => array(
 						ScheduledItemInterface::get(),
 					),
 					'fields'      => fn() => array(
 						'name'            => array(
 							'type'        => Type::nonNull( Type::string() ),
-							'description' => __( 'Human-readable name.', 'woocommerce' ),
+							'description' => __( 'Human-readable name.', 'woocommerce-simple-events' ),
 						),
 						'description'     => array(
 							'type'        => Type::nonNull( Type::string() ),
-							'description' => __( 'Detailed description shown on the public event page.', 'woocommerce' ),
+							'description' => __( 'Detailed description shown on the public event page.', 'woocommerce-simple-events' ),
 						),
 						'status'          => array(
 							'type'        => Type::nonNull( EventStatusType::get() ),
-							'description' => __( 'Current lifecycle status.', 'woocommerce' ),
+							'description' => __( 'Current lifecycle status.', 'woocommerce-simple-events' ),
 						),
 						'raw_status'      => array(
 							'type'        => Type::nonNull( Type::string() ),
-							'description' => __( 'Raw status string as stored. Useful when status is OTHER.', 'woocommerce' ),
+							'description' => __( 'Raw status string as stored. Useful when status is OTHER.', 'woocommerce-simple-events' ),
 						),
 						'venue'           => array(
 							'type'        => Type::nonNull( Type::string() ),
-							'description' => __( 'Venue (free-form text).', 'woocommerce' ),
+							'description' => __( 'Venue (free-form text).', 'woocommerce-simple-events' ),
 						),
 						'location'        => array(
 							'type'              => Type::nonNull( Type::string() ),
-							'description'       => __( 'Where the event takes place.', 'woocommerce' ),
+							'description'       => __( 'Where the event takes place.', 'woocommerce-simple-events' ),
 							'deprecationReason' => 'Use venue instead.',
 						),
 						'capacity'        => array(
 							'type'        => Type::nonNull( Type::int() ),
-							'description' => __( 'Maximum number of attendees the venue can accept.', 'woocommerce' ),
+							'description' => __( 'Maximum number of attendees the venue can accept.', 'woocommerce-simple-events' ),
 						),
 						'sessions'        => array(
 							'type'        => Type::nonNull( Type::listOf( Type::nonNull( Session::get() ) ) ),
-							'description' => __( 'Talks scheduled for this event.', 'woocommerce' ),
+							'description' => __( 'Talks scheduled for this event.', 'woocommerce-simple-events' ),
 						),
 						'organizer_login' => array(
 							'type'        => Type::nonNull( Type::string() ),
-							'description' => __( 'Login of the user who created the event.', 'woocommerce' ),
+							'description' => __( 'Login of the user who created the event.', 'woocommerce-simple-events' ),
 						),
 						'sequence'        => array(
 							'type'        => Type::nonNull( Type::int() ),
-							'description' => __( '[Internal] Internal sort order.', 'woocommerce' ),
+							'description' => __( '[Internal] Internal sort order.', 'woocommerce-simple-events' ),
 							'metadata'    => array(
 								'internal' => true,
 							),
 						),
 						'waitlist_size'   => array(
 							'type'          => Type::nonNull( Type::int() ),
-							'description'   => __( 'Number of people on the waitlist for this event.', 'woocommerce' ),
+							'description'   => __( 'Number of people on the waitlist for this event.', 'woocommerce-simple-events' ),
 							'authorization' => array(
 								array(
 									'attribute' => 'OwnerOrScope',
@@ -98,7 +98,7 @@ class Event {
 						),
 						'revenue'         => array(
 							'type'          => Type::float(),
-							'description'   => __( 'Total revenue collected from registrations for this event.', 'woocommerce' ),
+							'description'   => __( 'Total revenue collected from registrations for this event.', 'woocommerce-simple-events' ),
 							'authorization' => array(
 								array(
 									'attribute' => 'RequiresScope',
@@ -124,7 +124,7 @@ class Event {
 						),
 						'internal_notes'  => array(
 							'type'        => Type::nonNull( Type::string() ),
-							'description' => __( 'Free-form notes used internally by event managers.', 'woocommerce' ),
+							'description' => __( 'Free-form notes used internally by event managers.', 'woocommerce-simple-events' ),
 							'resolve'     => function ( $parent, $args, $context ) {
 							$principal = $context['principal'];
 							$_metadata = array(
@@ -142,11 +142,11 @@ class Event {
 						),
 						'id'              => array(
 							'type'        => Type::nonNull( Type::int() ),
-							'description' => __( 'Numeric identifier.', 'woocommerce' ),
+							'description' => __( 'Numeric identifier.', 'woocommerce-simple-events' ),
 						),
 						'date'            => array(
 							'type'        => DateTimeType::get(),
-							'description' => __( 'Date and time the item occurs, as an ISO 8601 string.', 'woocommerce' ),
+							'description' => __( 'Date and time the item occurs, as an ISO 8601 string.', 'woocommerce-simple-events' ),
 						),
 					),
 				)

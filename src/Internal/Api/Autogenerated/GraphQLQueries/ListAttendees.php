@@ -16,7 +16,7 @@ class ListAttendees {
 	public static function get_field_definition(): array {
 		return array(
 			'type'          => Type::nonNull( Type::listOf( Type::nonNull( Attendee::get() ) ) ),
-			'description'   => __( 'List attendees for an event.', 'woocommerce' ),
+			'description'   => __( 'List attendees for an event.', 'woocommerce-simple-events' ),
 			'authorization' => array(
 				array(
 					'attribute' => 'PublicAccess',
@@ -26,7 +26,7 @@ class ListAttendees {
 			'args'          => array(
 				'event_id' => array(
 					'type'        => Type::nonNull( Type::int() ),
-					'description' => __( 'Identifier of the event whose attendees to list.', 'woocommerce' ),
+					'description' => __( 'Identifier of the event whose attendees to list.', 'woocommerce-simple-events' ),
 				),
 			),
 			'resolve'       => array( self::class, 'resolve' ),

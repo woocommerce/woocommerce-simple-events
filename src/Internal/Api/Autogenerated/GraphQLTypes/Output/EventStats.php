@@ -17,7 +17,7 @@ class EventStats {
 			self::$instance = new ObjectType(
 				array(
 					'name'          => 'EventStats',
-					'description'   => __( 'Aggregate statistics for an event.', 'woocommerce' ),
+					'description'   => __( 'Aggregate statistics for an event.', 'woocommerce-simple-events' ),
 					'authorization' => array(
 						array(
 							'attribute' => 'RequiresScope',
@@ -29,7 +29,7 @@ class EventStats {
 					'fields'        => fn() => array(
 						'event_id'             => array(
 							'type'          => Type::int(),
-							'description'   => __( 'Identifier of the event the statistics summarise.', 'woocommerce' ),
+							'description'   => __( 'Identifier of the event the statistics summarise.', 'woocommerce-simple-events' ),
 							'authorization' => array(
 								array(
 									'attribute' => 'RequiresScope',
@@ -55,7 +55,7 @@ class EventStats {
 						),
 						'attendees_total'      => array(
 							'type'          => Type::int(),
-							'description'   => __( 'Total number of registered attendees.', 'woocommerce' ),
+							'description'   => __( 'Total number of registered attendees.', 'woocommerce-simple-events' ),
 							'authorization' => array(
 								array(
 									'attribute' => 'RequiresScope',
@@ -81,7 +81,7 @@ class EventStats {
 						),
 						'revenue_total'        => array(
 							'type'          => Type::float(),
-							'description'   => __( 'Total revenue collected from registrations.', 'woocommerce' ),
+							'description'   => __( 'Total revenue collected from registrations.', 'woocommerce-simple-events' ),
 							'authorization' => array(
 								array(
 									'attribute' => 'RequiresScope',
@@ -113,7 +113,7 @@ class EventStats {
 						),
 						'paid_attendees_count' => array(
 							'type'          => Type::int(),
-							'description'   => __( 'Number of attendees whose paid_amount is greater than zero.', 'woocommerce' ),
+							'description'   => __( 'Number of attendees whose paid_amount is greater than zero.', 'woocommerce-simple-events' ),
 							'authorization' => array(
 								array(
 									'attribute' => 'RequiresScope',

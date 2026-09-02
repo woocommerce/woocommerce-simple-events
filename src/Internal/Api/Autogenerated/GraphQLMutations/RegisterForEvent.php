@@ -17,7 +17,7 @@ class RegisterForEvent {
 	public static function get_field_definition(): array {
 		return array(
 			'type'          => Type::nonNull( AttendeeType::get() ),
-			'description'   => __( 'Register an attendee for an event.', 'woocommerce' ),
+			'description'   => __( 'Register an attendee for an event.', 'woocommerce-simple-events' ),
 			'authorization' => array(
 				array(
 					'attribute' => 'PublicAccess',

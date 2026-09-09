@@ -14,5 +14,8 @@
     },
     "config": {
         "optimize-autoloader": true
+    },
+    "scripts": {
+        "build:zip": "bash bin/build-zip.sh"
     }
 }

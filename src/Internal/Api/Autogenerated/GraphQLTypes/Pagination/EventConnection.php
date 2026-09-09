@@ -18,7 +18,7 @@ class EventConnection {
 			self::$instance = new ObjectType(
 				array(
 					'name'        => 'EventConnection',
-					'description' => __( 'A connection to a list of Event items.', 'woocommerce' ),
+					'description' => __( 'A connection to a list of Event items.', 'woocommerce-simple-events' ),
 					'fields'      => fn() => array(
 						'edges'       => array(
 							'type' => Type::nonNull(

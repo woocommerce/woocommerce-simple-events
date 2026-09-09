@@ -2,7 +2,7 @@
     "name": "woocommerce-simple-events",
     "private": true,
     "version": "0.1.0",
-    "description": "Test plugin exercising the WooCommerce dual-code GraphQL infrastructure end to end from outside core.",
+    "description": "Test plugin exercising the WooCommerce Dual API plugin's engine end to end.",
     "scripts": {
         "build:api": "php bin/build-api.php"
     }

@@ -16,7 +16,7 @@ class ListEventsConnection {
 	public static function get_field_definition(): array {
 		return array(
 			'type'          => Type::nonNull( EventConnectionType::get() ),
-			'description'   => __( '[Experimental] List events with cursor-based pagination.', 'woocommerce' ),
+			'description'   => __( '[Experimental] List events with cursor-based pagination.', 'woocommerce-simple-events' ),
 			'metadata'      => array(
 				'experimental' => true,
 			),
@@ -29,22 +29,22 @@ class ListEventsConnection {
 			'args'          => array(
 				'first'  => array(
 					'type'         => Type::int(),
-					'description'  => __( 'Return the first N results. Must be between 0 and 100.', 'woocommerce' ),
+					'description'  => __( 'Return the first N results. Must be between 0 and 100.', 'woocommerce-simple-events' ),
 					'defaultValue' => null,
 				),
 				'last'   => array(
 					'type'         => Type::int(),
-					'description'  => __( 'Return the last N results. Must be between 0 and 100.', 'woocommerce' ),
+					'description'  => __( 'Return the last N results. Must be between 0 and 100.', 'woocommerce-simple-events' ),
 					'defaultValue' => null,
 				),
 				'after'  => array(
 					'type'         => Type::string(),
-					'description'  => __( 'Return results after this cursor.', 'woocommerce' ),
+					'description'  => __( 'Return results after this cursor.', 'woocommerce-simple-events' ),
 					'defaultValue' => null,
 				),
 				'before' => array(
 					'type'         => Type::string(),
-					'description'  => __( 'Return results before this cursor.', 'woocommerce' ),
+					'description'  => __( 'Return results before this cursor.', 'woocommerce-simple-events' ),
 					'defaultValue' => null,
 				),
 			),

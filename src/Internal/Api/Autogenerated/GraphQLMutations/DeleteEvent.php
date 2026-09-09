@@ -24,7 +24,7 @@ class DeleteEvent {
 					)
 				)
 			),
-			'description'   => __( 'Delete an event. Requires the events:edit scope (manager).', 'woocommerce' ),
+			'description'   => __( 'Delete an event. Requires the events:edit scope (manager).', 'woocommerce-simple-events' ),
 			'authorization' => array(
 				array(
 					'attribute' => 'RequiresScope',
@@ -36,7 +36,7 @@ class DeleteEvent {
 			'args'          => array(
 				'id' => array(
 					'type'        => Type::nonNull( Type::int() ),
-					'description' => __( 'Identifier of the event to delete.', 'woocommerce' ),
+					'description' => __( 'Identifier of the event to delete.', 'woocommerce-simple-events' ),
 				),
 			),
 			'resolve'       => array( self::class, 'resolve' ),

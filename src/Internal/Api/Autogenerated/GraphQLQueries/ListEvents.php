@@ -16,7 +16,7 @@ class ListEvents {
 	public static function get_field_definition(): array {
 		return array(
 			'type'          => Type::nonNull( Type::listOf( Type::nonNull( Event::get() ) ) ),
-			'description'   => __( 'List every event.', 'woocommerce' ),
+			'description'   => __( 'List every event.', 'woocommerce-simple-events' ),
 			'authorization' => array(
 				array(
 					'attribute' => 'PublicAccess',

@@ -1,16 +1,16 @@
 # WooCommerce Simple Events
 
-A **test plugin** that exercises WooCommerce's dual-code / GraphQL API
-infrastructure from outside core. It defines a small event-registration
-schema (events, sessions, attendees, statistics, and a handful of
-queries and mutations) and uses it to demonstrate, end to end, the
-pieces a plugin can build its own dual API from: the code-API
-conventions, custom authentication and authorization, schema metadata,
-pagination, and the build pipeline.
+A **test plugin** that exercises the engine of the
+[WooCommerce Dual API plugin](https://github.com/woocommerce/woocommerce-dual-api)
+end to end. It defines a small event-registration schema (events,
+sessions, attendees, statistics, and a handful of queries and mutations)
+and uses it to demonstrate the pieces a plugin can build its own dual
+API from: the code-API conventions, custom authentication and
+authorization, schema metadata, pagination, and the build pipeline.
 
 It has no production use; it exists to validate (and document, alongside
-the [Dual API docs](https://developer.woocommerce.com/docs/apis/dual-api/))
-that a sibling plugin can reuse the infrastructure.
+the [Dual API docs](https://github.com/woocommerce/woocommerce-dual-api/tree/trunk/docs))
+that a plugin can build its own dual API on the engine.
 
 
 ## What it demonstrates
@@ -38,12 +38,11 @@ that a sibling plugin can reuse the infrastructure.
 ## Requirements
 
 - PHP 8.1 or later.
-- A recent WooCommerce build with the dual-code GraphQL API. The plugin
-  uses the granular-authorization features (property-level
-  `#[RequiredCapability]` / `#[PublicAccess]`, the opt-in `$_metadata` /
-  `$_args` / `$_parent` slots on attribute `authorize()` methods, and the
-  `_apiMetadata.authorization` slice), which are part of trunk.
-- The `dual_code_graphql_api` feature flag enabled in WooCommerce.
+- WooCommerce 11.2 or later.
+- The [WooCommerce Dual API plugin](https://github.com/woocommerce/woocommerce-dual-api)
+  installed and active. (WooCommerce 10.9 to 11.1 shipped the engine
+  inside WooCommerce itself, behind the `dual_code_graphql_api` feature
+  flag; this version of the test plugin targets the standalone plugin.)
 
 ## Layout
 
@@ -202,17 +201,26 @@ composer install   # once, after cloning
 pnpm run build:api
 ```
 
-`composer build:api` and `php bin/build-api.php` do the same thing.
+`php bin/build-api.php` does the same thing. The generated code
+translates its schema descriptions with this plugin's text domain,
+`woocommerce-simple-events` (the builder defaults to the plugin
+directory's name).
 
-### Locating WooCommerce
+### Locating the WooCommerce Dual API plugin
 
-By convention the build script expects WooCommerce's plugin tree at
-`../woocommerce/plugins/woocommerce` relative to this plugin's root.
-Override with `WC_PATH`:
+The build script needs the WooCommerce Dual API plugin's Composer
+autoloader (that is where `ApiBuilder` lives). By convention it expects
+the plugin at `../woocommerce-dual-api` relative to this plugin's root,
+which is where it is when both are installed under `wp-content/plugins`
+or cloned side by side. Override with `WC_DUAL_API_PATH`:
 
 ```sh
-WC_PATH=/path/to/woocommerce/plugins/woocommerce pnpm run build:api
+WC_DUAL_API_PATH=/path/to/woocommerce-dual-api pnpm run build:api
 ```
+
+A clone of the plugin needs `composer install` run in it (`--no-dev` is
+fine); when its development dependencies are present the generated files
+are additionally formatted with `phpcbf`.
 
 ## Querying
 

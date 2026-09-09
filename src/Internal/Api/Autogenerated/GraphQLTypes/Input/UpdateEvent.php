@@ -16,7 +16,7 @@ class UpdateEvent {
 			self::$instance = new InputObjectType(
 				array(
 					'name'          => 'UpdateEventInput',
-					'description'   => __( 'Patchable fields on an event.', 'woocommerce' ),
+					'description'   => __( 'Patchable fields on an event.', 'woocommerce-simple-events' ),
 					'authorization' => array(
 						array(
 							'attribute' => 'RequiresScope',
@@ -28,19 +28,19 @@ class UpdateEvent {
 					'fields'        => fn() => array(
 						'name'           => array(
 							'type'        => Type::string(),
-							'description' => __( 'New event name.', 'woocommerce' ),
+							'description' => __( 'New event name.', 'woocommerce-simple-events' ),
 						),
 						'capacity'       => array(
 							'type'        => Type::int(),
-							'description' => __( 'New capacity for the venue.', 'woocommerce' ),
+							'description' => __( 'New capacity for the venue.', 'woocommerce-simple-events' ),
 						),
 						'waitlist_size'  => array(
 							'type'        => Type::int(),
-							'description' => __( 'New waitlist size.', 'woocommerce' ),
+							'description' => __( 'New waitlist size.', 'woocommerce-simple-events' ),
 						),
 						'internal_notes' => array(
 							'type'        => Type::string(),
-							'description' => __( 'Replacement internal notes.', 'woocommerce' ),
+							'description' => __( 'Replacement internal notes.', 'woocommerce-simple-events' ),
 						),
 					),
 				)

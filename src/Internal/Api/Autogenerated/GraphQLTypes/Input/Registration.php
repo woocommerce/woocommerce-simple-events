@@ -16,27 +16,27 @@ class Registration {
 			self::$instance = new InputObjectType(
 				array(
 					'name'        => 'RegistrationInput',
-					'description' => __( 'Data submitted to register an attendee for an event.', 'woocommerce' ),
+					'description' => __( 'Data submitted to register an attendee for an event.', 'woocommerce-simple-events' ),
 					'fields'      => fn() => array(
 						'event_id'       => array(
 							'type'        => Type::nonNull( Type::int() ),
-							'description' => __( 'Identifier of the event being registered for.', 'woocommerce' ),
+							'description' => __( 'Identifier of the event being registered for.', 'woocommerce-simple-events' ),
 						),
 						'attendee_name'  => array(
 							'type'        => Type::nonNull( Type::string() ),
-							'description' => __( 'Attendee name.', 'woocommerce' ),
+							'description' => __( 'Attendee name.', 'woocommerce-simple-events' ),
 						),
 						'attendee_email' => array(
 							'type'        => Type::nonNull( Type::string() ),
-							'description' => __( 'Attendee email.', 'woocommerce' ),
+							'description' => __( 'Attendee email.', 'woocommerce-simple-events' ),
 						),
 						'paid_amount'    => array(
 							'type'        => Type::float(),
-							'description' => __( 'Amount the attendee paid; only finance staff may set this on creation.', 'woocommerce' ),
+							'description' => __( 'Amount the attendee paid; only finance staff may set this on creation.', 'woocommerce-simple-events' ),
 						),
 						'internal_notes' => array(
 							'type'        => Type::string(),
-							'description' => __( 'Internal notes attached to the registration; only managers may set them.', 'woocommerce' ),
+							'description' => __( 'Internal notes attached to the registration; only managers may set them.', 'woocommerce-simple-events' ),
 						),
 					),
 				)

@@ -16,7 +16,7 @@ class GetStatistics {
 	public static function get_field_definition(): array {
 		return array(
 			'type'          => EventStatsType::get(),
-			'description'   => __( 'Aggregate statistics for an event. Sensitive fields are gated to finance.', 'woocommerce' ),
+			'description'   => __( 'Aggregate statistics for an event. Sensitive fields are gated to finance.', 'woocommerce-simple-events' ),
 			'authorization' => array(
 				array(
 					'attribute' => 'PublicAccess',
@@ -26,7 +26,7 @@ class GetStatistics {
 			'args'          => array(
 				'event_id' => array(
 					'type'        => Type::nonNull( Type::int() ),
-					'description' => __( 'Identifier of the event to summarise.', 'woocommerce' ),
+					'description' => __( 'Identifier of the event to summarise.', 'woocommerce-simple-events' ),
 				),
 			),
 			'resolve'       => array( self::class, 'resolve' ),

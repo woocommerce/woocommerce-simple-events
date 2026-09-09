@@ -16,7 +16,7 @@ class DateTime {
 			self::$instance = new CustomScalarType(
 				array(
 					'name'         => 'DateTime',
-					'description'  => __( 'An ISO 8601 encoded date and time string.', 'woocommerce' ),
+					'description'  => __( 'An ISO 8601 encoded date and time string.', 'woocommerce-simple-events' ),
 					'serialize'    => fn( $value ) => DateTimeScalar::serialize( $value ),
 					'parseValue'   => function ( $value ) {
 						try {

@@ -17,7 +17,7 @@ class Attendee {
 			self::$instance = new ObjectType(
 				array(
 					'name'          => 'Attendee',
-					'description'   => __( 'A registration for an event.', 'woocommerce' ),
+					'description'   => __( 'A registration for an event.', 'woocommerce-simple-events' ),
 					'authorization' => array(
 						array(
 							'attribute' => 'RequiresScope',
@@ -29,7 +29,7 @@ class Attendee {
 					'fields'        => fn() => array(
 						'id'          => array(
 							'type'          => Type::int(),
-							'description'   => __( 'Numeric identifier.', 'woocommerce' ),
+							'description'   => __( 'Numeric identifier.', 'woocommerce-simple-events' ),
 							'authorization' => array(
 								array(
 									'attribute' => 'RequiresScope',
@@ -55,7 +55,7 @@ class Attendee {
 						),
 						'event_id'    => array(
 							'type'          => Type::int(),
-							'description'   => __( 'Identifier of the event this attendee registered for.', 'woocommerce' ),
+							'description'   => __( 'Identifier of the event this attendee registered for.', 'woocommerce-simple-events' ),
 							'authorization' => array(
 								array(
 									'attribute' => 'RequiresScope',
@@ -81,7 +81,7 @@ class Attendee {
 						),
 						'name'        => array(
 							'type'          => Type::string(),
-							'description'   => __( 'Attendee name as captured during registration.', 'woocommerce' ),
+							'description'   => __( 'Attendee name as captured during registration.', 'woocommerce-simple-events' ),
 							'authorization' => array(
 								array(
 									'attribute' => 'RequiresScope',
@@ -113,7 +113,7 @@ class Attendee {
 						),
 						'email'       => array(
 							'type'          => Type::string(),
-							'description'   => __( 'Attendee email captured during registration.', 'woocommerce' ),
+							'description'   => __( 'Attendee email captured during registration.', 'woocommerce-simple-events' ),
 							'authorization' => array(
 								array(
 									'attribute' => 'RequiresScope',
@@ -145,7 +145,7 @@ class Attendee {
 						),
 						'paid_amount' => array(
 							'type'          => Type::float(),
-							'description'   => __( 'Amount the attendee paid for their ticket.', 'woocommerce' ),
+							'description'   => __( 'Amount the attendee paid for their ticket.', 'woocommerce-simple-events' ),
 							'authorization' => array(
 								array(
 									'attribute' => 'RequiresScope',

@@ -16,7 +16,7 @@ class GetEvent {
 	public static function get_field_definition(): array {
 		return array(
 			'type'          => EventType::get(),
-			'description'   => __( 'Fetch a single event by id.', 'woocommerce' ),
+			'description'   => __( 'Fetch a single event by id.', 'woocommerce-simple-events' ),
 			'authorization' => array(
 				array(
 					'attribute' => 'PublicAccess',
@@ -26,7 +26,7 @@ class GetEvent {
 			'args'          => array(
 				'id' => array(
 					'type'        => Type::nonNull( Type::int() ),
-					'description' => __( 'Identifier of the event to fetch.', 'woocommerce' ),
+					'description' => __( 'Identifier of the event to fetch.', 'woocommerce-simple-events' ),
 				),
 			),
 			'resolve'       => array( self::class, 'resolve' ),

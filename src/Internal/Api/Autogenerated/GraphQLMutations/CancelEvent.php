@@ -16,7 +16,7 @@ class CancelEvent {
 	public static function get_field_definition(): array {
 		return array(
 			'type'          => EventType::get(),
-			'description'   => __( 'Cancel an event. Allowed for managers (events:edit) or the event organizer.', 'woocommerce' ),
+			'description'   => __( 'Cancel an event. Allowed for managers (events:edit) or the event organizer.', 'woocommerce-simple-events' ),
 			'authorization' => array(
 				array(
 					'attribute' => 'RequiresScope',
@@ -28,7 +28,7 @@ class CancelEvent {
 			'args'          => array(
 				'id' => array(
 					'type'        => Type::nonNull( Type::int() ),
-					'description' => __( 'Identifier of the event to cancel.', 'woocommerce' ),
+					'description' => __( 'Identifier of the event to cancel.', 'woocommerce-simple-events' ),
 				),
 			),
 			'resolve'       => array( self::class, 'resolve' ),

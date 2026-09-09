@@ -19,15 +19,15 @@ class ScheduledItem {
 			self::$instance = new InterfaceType(
 				array(
 					'name'        => 'ScheduledItem',
-					'description' => __( 'An object with an id that occurs at a specific date and time.', 'woocommerce' ),
+					'description' => __( 'An object with an id that occurs at a specific date and time.', 'woocommerce-simple-events' ),
 					'fields'      => fn() => array(
 						'id'   => array(
 							'type'        => Type::nonNull( Type::int() ),
-							'description' => __( 'Numeric identifier.', 'woocommerce' ),
+							'description' => __( 'Numeric identifier.', 'woocommerce-simple-events' ),
 						),
 						'date' => array(
 							'type'        => DateTimeType::get(),
-							'description' => __( 'Date and time the item occurs, as an ISO 8601 string.', 'woocommerce' ),
+							'description' => __( 'Date and time the item occurs, as an ISO 8601 string.', 'woocommerce-simple-events' ),
 						),
 					),
 					'resolveType' => function ( $value ) {

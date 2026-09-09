@@ -18,7 +18,7 @@ class Session {
 			self::$instance = new ObjectType(
 				array(
 					'name'        => 'Session',
-					'description' => __( 'A talk or session in an event programme.', 'woocommerce' ),
+					'description' => __( 'A talk or session in an event programme.', 'woocommerce-simple-events' ),
 					'metadata'    => array(
 						'team' => 'events-platform',
 					),
@@ -28,19 +28,19 @@ class Session {
 					'fields'      => fn() => array(
 						'title'   => array(
 							'type'        => Type::nonNull( Type::string() ),
-							'description' => __( 'Session title.', 'woocommerce' ),
+							'description' => __( 'Session title.', 'woocommerce-simple-events' ),
 						),
 						'speaker' => array(
 							'type'        => Type::string(),
-							'description' => __( 'Name of the speaker, if announced.', 'woocommerce' ),
+							'description' => __( 'Name of the speaker, if announced.', 'woocommerce-simple-events' ),
 						),
 						'id'      => array(
 							'type'        => Type::nonNull( Type::int() ),
-							'description' => __( 'Numeric identifier.', 'woocommerce' ),
+							'description' => __( 'Numeric identifier.', 'woocommerce-simple-events' ),
 						),
 						'date'    => array(
 							'type'        => DateTimeType::get(),
-							'description' => __( 'Date and time the item occurs, as an ISO 8601 string.', 'woocommerce' ),
+							'description' => __( 'Date and time the item occurs, as an ISO 8601 string.', 'woocommerce-simple-events' ),
 						),
 					),
 				)
